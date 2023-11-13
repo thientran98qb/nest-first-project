@@ -30,4 +30,10 @@ export class UsersService {
   remove(id: number) {
     return `This action removes a #${id} user`;
   }
+
+  async findUserById(id: number) {
+    return await this.usersRepository.findOneBy({
+      id: id
+    })
+  }
 }
