@@ -1,9 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards, UploadedFile, UseInterceptors, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Request } from 'express';
 import { ApiTags } from '@nestjs/swagger';
+import { AccessTokenGuard } from '../auth/guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { storageConfig } from '../config/storage';
 @Controller('users')
 @ApiTags('users')
 export class UsersController {
@@ -32,5 +35,20 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Post('upload-avatar')
+  @UseInterceptors(FileInterceptor('avatar', { storage: storageConfig('avatar') }))
+  uploadAvatar(
+    @Req() request: Request,
+    @UploadedFile(new ParseFilePipe({
+      validators: [
+        new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }),
+        new FileTypeValidator({fileType: 'image/jpeg'})
+      ]
+    })) file: Express.Multer.File
+  ) {
+    console.log('file', file);
   }
 }

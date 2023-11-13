@@ -7,9 +7,15 @@
       "target": "es6",
       "module": "commonjs",
       "moduleResolution": "node",
-      "outDir": "./build",
+      "outDir": "./dist",
+      "baseUrl": "./",
+      "declaration": true,
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
-      "sourceMap": true
-   }
+      "sourceMap": true,
+      "incremental": true,
+      "skipLibCheck": true,
+      "allowSyntheticDefaultImports": true,
+   },
+   "include": ["src/**/*"]
 }
