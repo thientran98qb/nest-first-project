@@ -12,6 +12,8 @@ export interface EnvData{
     DB_PORT?: number;
     DB_USER: string;
     DB_PASSWORD: string;
+    SECRET_JWT: string;
+    SECRET_JWT_REFRESH: string;
 }
 
 @Injectable()
