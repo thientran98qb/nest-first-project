@@ -17,6 +17,9 @@ export class User {
     @Column({nullable: true})
     refresh_token: string;
 
+    @Column({nullable: true})
+    avatar: string;
+
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
     created_at: Date;
 
