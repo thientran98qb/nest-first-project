@@ -1,24 +1,24 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { User } from './entities/user.entity';
-import { Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { IUserRepository, UserRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject('USER_REPOSITORY')
-    private readonly usersRepository: Repository<User>, 
+    @InjectRepository(UserRepository)
+    private readonly usersRepository: IUserRepository,
   ) {}
 
   async findUserById(id: number) {
-    return await this.usersRepository.findOneBy({
-      id: id
-    })
+    return await this.usersRepository.findUser(id);
   }
 
-  async uploadAvatar(avatar: string, id: number)
-  {
-    return await this.usersRepository.update(id, {
-      avatar: avatar
-    })
+  async uploadAvatar(avatar: string, id: number) {
+    return await this.usersRepository.update(
+      { id },
+      {
+        avatar: avatar,
+      },
+    );
   }
 }

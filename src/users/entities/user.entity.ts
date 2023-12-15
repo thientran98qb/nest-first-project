@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
+import { Post } from "../../posts/entities/post.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -19,6 +20,9 @@ export class User {
 
     @Column({nullable: true})
     avatar: string;
+
+    @OneToMany(() => Post, (post) => post.user)
+    posts: Post[]
 
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
     created_at: Date;
